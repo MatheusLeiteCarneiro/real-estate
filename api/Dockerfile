@@ -5,11 +5,12 @@ WORKDIR /app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
+COPY api/pom.xml api/pom.xml
 
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 
-COPY src src
+COPY api/src api/src
 
 RUN ./mvnw clean package -DskipTests
 
@@ -21,7 +22,7 @@ RUN groupadd --system appgroup \
     && useradd --system --gid appgroup --no-create-home appuser
 
 COPY --from=build --chown=appuser:appgroup \
-    /app/target/real-estate-api.jar app.jar
+    /app/api/target/real-estate-api.jar app.jar
 
 USER appuser
 

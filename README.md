@@ -1,4 +1,4 @@
-# Real Estate API
+# Real Estate
 
 ![Java](https://img.shields.io/badge/Java-25-007396?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.6-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
@@ -7,7 +7,7 @@
 ![OAuth2](https://img.shields.io/badge/OAuth2-PKCE-000000?style=for-the-badge)
 ![Flyway](https://img.shields.io/badge/Flyway-Migrations-CC0200?style=for-the-badge&logo=flyway&logoColor=white)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/MatheusLeiteCarneiro/real-estate-api/ci.yml?branch=main&style=for-the-badge&logo=github&label=CI)](https://github.com/MatheusLeiteCarneiro/real-estate-api/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/MatheusLeiteCarneiro/real-estate/ci.yml?branch=main&style=for-the-badge&logo=github&label=CI)](https://github.com/MatheusLeiteCarneiro/real-estate/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 A REST API for a real estate platform built with Spring Boot, PostgreSQL, OAuth2 Authorization Code with PKCE, JWT, Cloudinary, Flyway, Swagger, Docker Compose, and Postman.
@@ -249,8 +249,8 @@ GET /v1/properties?search=pool&transactionType=SALE&category=HOUSE&page=0&size=1
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/MatheusLeiteCarneiro/real-estate-api.git
-cd real-estate-api
+git clone https://github.com/MatheusLeiteCarneiro/real-estate.git
+cd real-estate
 ```
 
 ### 2. Create the environment file
@@ -304,7 +304,7 @@ Docker Compose starts:
 Start PostgreSQL separately, configure `.env`, then run:
 
 ```bash
-./mvnw spring-boot:run
+./mvnw -pl api spring-boot:run -Dspring-boot.run.workingDirectory="$(pwd)"
 ```
 
 The application automatically loads `.env` values during startup.

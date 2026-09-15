@@ -18,7 +18,9 @@ services:
     restart: always
 
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     image: realestate-api:latest
     container_name: realestate_api_container
     ports:
