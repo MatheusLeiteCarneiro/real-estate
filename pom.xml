@@ -53,5 +53,6 @@
 
     <modules>
         <module>api</module>
+        <module>auth-server</module>
     </modules>
 </project>
