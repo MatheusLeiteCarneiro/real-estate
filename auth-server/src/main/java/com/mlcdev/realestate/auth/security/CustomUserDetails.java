@@ -1,5 +1,7 @@
 package com.mlcdev.realestate.auth.security;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mlcdev.realestate.auth.entities.AuthUserEntity;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,11 +16,11 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private UUID id;
-    private String username;
-    private String password;
-    private Boolean active;
-    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private final UUID id;
+    private final String username;
+    private final String password;
+    private final Boolean active;
+    private final Set<GrantedAuthority> authorities;
 
     public CustomUserDetails(AuthUserEntity authUserEntity) {
         id = authUserEntity.getId();
@@ -26,6 +28,23 @@ public class CustomUserDetails implements UserDetails {
         password = authUserEntity.getPassword();
         active = authUserEntity.getActive();
         authorities = authUserEntity.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+    }
+
+    @JsonCreator
+    public CustomUserDetails(
+            @JsonProperty("id") UUID id,
+            @JsonProperty("username") String username,
+            @JsonProperty("password") String password,
+            @JsonProperty("enabled") Boolean enabled,
+            @JsonProperty("authorities") Set<GrantedAuthority> authorities
+    ) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.active = enabled;
+        this.authorities = authorities != null
+                ? new HashSet<>(authorities)
+                : new HashSet<>();
     }
 
     @Override
@@ -45,7 +64,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return Boolean.TRUE.equals(active);
     }
 
     public UUID getId() {
