@@ -27,6 +27,7 @@ services:
       - "8080:8080"
     env_file:
       - .env
+      - api/.env
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
 
@@ -36,12 +37,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
-      JWT_PUBLIC_KEY: file:/app/secrets/app.pub
-      JWT_PRIVATE_KEY: file:/app/secrets/app.key
-
-      AUTHORIZATION_SERVER_URL: ${AUTHORIZATION_SERVER_URL:-http://localhost:8080}
-    volumes:
-      - ./secrets:/app/secrets:ro
+      AUTHORIZATION_SERVER_URL: ${AUTHORIZATION_SERVER_URL:-http://localhost:9000}
     depends_on:
       database:
         condition: service_healthy
