@@ -8,11 +8,11 @@ COPY pom.xml .
 COPY api/pom.xml api/pom.xml
 
 RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
+RUN ./mvnw -f api/pom.xml dependency:go-offline
 
 COPY api/src api/src
 
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw -f api/pom.xml clean package -DskipTests
 
 FROM eclipse-temurin:25-jre
 
