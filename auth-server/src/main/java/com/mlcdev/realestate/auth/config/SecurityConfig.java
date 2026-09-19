@@ -3,6 +3,7 @@ package com.mlcdev.realestate.auth.config;
 import com.mlcdev.realestate.auth.config.properties.BffClientProperties;
 import com.mlcdev.realestate.auth.config.properties.JwtKeyProperties;
 import com.mlcdev.realestate.auth.config.properties.PostmanClientProperties;
+import com.mlcdev.realestate.auth.config.properties.SwaggerClientProperties;
 import com.mlcdev.realestate.auth.config.properties.TokenDurationProperties;
 import com.mlcdev.realestate.auth.entities.AuthUserEntity;
 import com.mlcdev.realestate.auth.repositories.AuthUserEntityRepository;
@@ -118,8 +119,8 @@ public class SecurityConfig {
 
     @Bean
     @Profile("dev")
-    public RegisteredClientRepository devRegisteredClientRepository(BffClientProperties bffClientProperties, PostmanClientProperties postmanClientProperties, TokenDurationProperties tokenDurationProperties, PasswordEncoder passwordEncoder) {
-        return new InMemoryRegisteredClientRepository(createBffClient(bffClientProperties, tokenDurationProperties, passwordEncoder), createPostmanClient(postmanClientProperties, tokenDurationProperties, passwordEncoder));
+    public RegisteredClientRepository devRegisteredClientRepository(BffClientProperties bffClientProperties, PostmanClientProperties postmanClientProperties, SwaggerClientProperties swaggerClientProperties, TokenDurationProperties tokenDurationProperties, PasswordEncoder passwordEncoder) {
+        return new InMemoryRegisteredClientRepository(createBffClient(bffClientProperties, tokenDurationProperties, passwordEncoder), createPostmanClient(postmanClientProperties, tokenDurationProperties, passwordEncoder), createSwaggerClient(swaggerClientProperties, tokenDurationProperties));
     }
 
     @Bean
@@ -134,6 +135,23 @@ public class SecurityConfig {
 
     private RegisteredClient createPostmanClient(PostmanClientProperties properties, TokenDurationProperties tokenDurationProperties, PasswordEncoder passwordEncoder) {
         return RegisteredClient.withId(UUID.nameUUIDFromBytes(properties.clientId().getBytes(StandardCharsets.UTF_8)).toString()).clientId(properties.clientId()).clientSecret(passwordEncoder.encode(properties.clientSecret())).clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC).authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN).redirectUri(properties.redirectUri()).scope(OidcScopes.OPENID).clientSettings(ClientSettings.builder().requireProofKey(true).requireAuthorizationConsent(false).build()).tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofSeconds(tokenDurationProperties.access())).refreshTokenTimeToLive(Duration.ofSeconds(tokenDurationProperties.refresh())).reuseRefreshTokens(false).build()).build();
+    }
+
+    private RegisteredClient createSwaggerClient(SwaggerClientProperties properties, TokenDurationProperties tokenDurationProperties) {
+        return RegisteredClient.withId(UUID.nameUUIDFromBytes(properties.clientId().getBytes(StandardCharsets.UTF_8)).toString())
+                .clientId(properties.clientId())
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri(properties.redirectUri())
+                .scope(OidcScopes.OPENID)
+                .clientSettings(ClientSettings.builder()
+                        .requireProofKey(true)
+                        .requireAuthorizationConsent(false)
+                        .build())
+                .tokenSettings(TokenSettings.builder()
+                        .accessTokenTimeToLive(Duration.ofSeconds(tokenDurationProperties.access()))
+                        .build())
+                .build();
     }
 
     @Bean
