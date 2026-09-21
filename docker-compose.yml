@@ -37,10 +37,39 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
-      AUTHORIZATION_SERVER_URL: ${AUTHORIZATION_SERVER_URL:-http://localhost:9000}
+      JWK_SET_URI: http://auth-server:9000/oauth2/jwks
+
     depends_on:
       database:
         condition: service_healthy
+    restart: always
+
+  auth-server:
+    build:
+      context: .
+      dockerfile: auth-server/Dockerfile
+    image: realestate-auth-server:latest
+    container_name: realestate_auth_server_container
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+      - auth-server/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+
+      DB_HOST: database
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+
+    depends_on:
+      database:
+        condition: service_healthy
+
+    volumes:
+      - ./auth-server/secrets:/app/secrets:ro
     restart: always
 
 volumes:

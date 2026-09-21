@@ -48,6 +48,8 @@
     </dependencies>
 
     <build>
+        <finalName>real-estate-auth-server</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

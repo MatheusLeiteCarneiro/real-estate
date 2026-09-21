@@ -6,7 +6,6 @@ target
 .env.*
 !.env.example
 auth-server/secrets
-auth-server/secrets/
 *.key
 *.pub
 README.md
