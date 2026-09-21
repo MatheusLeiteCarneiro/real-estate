@@ -52,6 +52,7 @@
     </properties>
 
     <modules>
+        <module>migrations</module>
         <module>api</module>
         <module>auth-server</module>
     </modules>

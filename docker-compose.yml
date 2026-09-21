@@ -17,6 +17,16 @@ services:
       retries: 5
     restart: always
 
+  migrations:
+    image: flyway/flyway:11.14.1
+    container_name: realestate_migrations_container
+    command: -url=jdbc:postgresql://database:5432/${POSTGRES_DB} -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} migrate
+    volumes:
+      - ./migrations/src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      database:
+        condition: service_healthy
+
   api:
     build:
       context: .
@@ -42,6 +52,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
     restart: always
 
   auth-server:
@@ -67,7 +79,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
-
+      migrations:
+        condition: service_completed_successfully
     volumes:
       - ./auth-server/secrets:/app/secrets:ro
     restart: always
