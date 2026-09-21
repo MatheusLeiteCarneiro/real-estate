@@ -55,5 +55,6 @@
         <module>migrations</module>
         <module>api</module>
         <module>auth-server</module>
+        <module>bff</module>
     </modules>
 </project>
