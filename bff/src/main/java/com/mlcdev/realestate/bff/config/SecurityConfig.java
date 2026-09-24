@@ -25,6 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository){
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/properties/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/bff/session").permitAll()
                 .anyRequest().authenticated()
         );
         http.exceptionHandling(handler -> handler
