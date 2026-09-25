@@ -11,8 +11,11 @@ import org.springframework.security.config.annotation.web.configurers.RequestCac
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +23,8 @@ public class SecurityConfig {
 
     @Value("${real-estate.bff.frontend-url}")
     private String frontendURL;
+    @Value("${real-estate.bff.logout-uri}")
+    private String logoutUri;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository){
@@ -38,6 +43,24 @@ public class SecurityConfig {
                 .authorizationEndpoint(endpoint -> endpoint.authorizationRequestResolver(resolver))
                 .defaultSuccessUrl(frontendURL, true)
         );
+        http.logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler()));
         return http.build();
+    }
+
+    private LogoutSuccessHandler oidcLogoutSuccessHandler(){
+        return ((_, response, authentication) -> {
+            if(authentication != null && authentication.getPrincipal() instanceof OidcUser user){
+                String url = UriComponentsBuilder.fromUriString(logoutUri)
+                        .queryParam("id_token_hint", "{idToken}")
+                        .queryParam("post_logout_redirect_uri", "{redirect}")
+                        .encode()
+                        .buildAndExpand(user.getIdToken().getTokenValue(), frontendURL)
+                        .toUriString();
+                response.sendRedirect(url);
+            }
+            else {
+                response.sendRedirect(frontendURL);
+            }
+        });
     }
 }
