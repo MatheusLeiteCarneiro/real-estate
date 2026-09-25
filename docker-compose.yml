@@ -86,6 +86,7 @@ services:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
 
       DB_HOST: database
+      REDIS_HOST: redis
 
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
@@ -93,6 +94,8 @@ services:
 
     depends_on:
       database:
+        condition: service_healthy
+      redis:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
