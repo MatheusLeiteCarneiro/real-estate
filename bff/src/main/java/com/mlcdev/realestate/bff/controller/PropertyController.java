@@ -1,7 +1,7 @@
 package com.mlcdev.realestate.bff.controller;
 
+import com.mlcdev.realestate.bff.proxy.ApiResponses;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -37,7 +37,7 @@ public class PropertyController {
 
     @GetMapping
     public ResponseEntity<byte[]> findAvailableProperties(@RequestParam Map<String, String> params) {
-        return forward(publicRestClient.get().uri(uriBuilder -> {
+        return ApiResponses.forward(publicRestClient.get().uri(uriBuilder -> {
             params.forEach(uriBuilder::queryParam);
             return uriBuilder.path(PROPERTIES_BASE_URL).build();
         }).retrieve().toEntity(byte[].class));
@@ -46,12 +46,12 @@ public class PropertyController {
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> findPropertyById(@PathVariable UUID id, @AuthenticationPrincipal OidcUser user) {
         RestClient restClient = user == null ? publicRestClient : authRestClient;
-        return forward(restClient.get().uri(ID_PATH, id).retrieve().toEntity(byte[].class));
+        return ApiResponses.forward(restClient.get().uri(ID_PATH, id).retrieve().toEntity(byte[].class));
     }
 
     @GetMapping("/all")
     public ResponseEntity<byte[]> findAllProperties(@RequestParam Map<String, String> params) {
-        return forward(authRestClient.get().uri(uriBuilder -> {
+        return ApiResponses.forward(authRestClient.get().uri(uriBuilder -> {
             params.forEach(uriBuilder::queryParam);
             return uriBuilder.path(PROPERTIES_BASE_URL + "/all").build();
         }).retrieve().toEntity(byte[].class));
@@ -59,32 +59,21 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<byte[]> createProperty(@RequestBody Map<String, Object> body) {
-        return forward(authRestClient.post().uri(PROPERTIES_BASE_URL).body(body).retrieve().toEntity(byte[].class));
+        return ApiResponses.forward(authRestClient.post().uri(PROPERTIES_BASE_URL).body(body).retrieve().toEntity(byte[].class));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<byte[]> updateProperty(@PathVariable UUID id, @RequestBody Map<String, Object> body) {
-        return forward(authRestClient.patch().uri(ID_PATH, id).body(body).retrieve().toEntity(byte[].class));
+        return ApiResponses.forward(authRestClient.patch().uri(ID_PATH, id).body(body).retrieve().toEntity(byte[].class));
     }
 
     @PatchMapping("/{id}/toggle-active")
     public ResponseEntity<byte[]> toggleAvailable(@PathVariable UUID id) {
-        return forward(authRestClient.patch().uri(ID_PATH + "/toggle-active", id).retrieve().toEntity(byte[].class));
+        return ApiResponses.forward(authRestClient.patch().uri(ID_PATH + "/toggle-active", id).retrieve().toEntity(byte[].class));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<byte[]> deleteProperty(@PathVariable UUID id) {
-        return forward(authRestClient.delete().uri(ID_PATH, id).retrieve().toEntity(byte[].class));
-    }
-
-    private ResponseEntity<byte[]> forward(ResponseEntity<byte[]> upstream) {
-        MediaType contentType = upstream.getHeaders().getContentType();
-        ResponseEntity.BodyBuilder builder = ResponseEntity.status(upstream.getStatusCode());
-
-        if (contentType != null) {
-            builder.contentType(contentType);
-        }
-
-        return builder.body(upstream.getBody());
+        return ApiResponses.forward(authRestClient.delete().uri(ID_PATH, id).retrieve().toEntity(byte[].class));
     }
 }

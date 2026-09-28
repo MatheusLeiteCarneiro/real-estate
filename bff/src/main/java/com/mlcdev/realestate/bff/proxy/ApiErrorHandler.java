@@ -1,4 +1,4 @@
-package com.mlcdev.realestate.bff.exception;
+package com.mlcdev.realestate.bff.proxy;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
