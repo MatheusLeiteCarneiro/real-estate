@@ -1,8 +1,10 @@
 package com.mlcdev.realestate.bff.exception;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.RestClientResponseException;
@@ -21,5 +23,10 @@ public class ApiErrorHandler {
         }
 
         return builder.body(ex.getResponseBodyAsByteArray());
+    }
+
+    @ExceptionHandler(ClientAuthorizationRequiredException.class)
+    public ResponseEntity<Void> handleMissingAuthorization(){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
