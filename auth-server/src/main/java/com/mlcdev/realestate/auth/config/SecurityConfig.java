@@ -39,6 +39,7 @@ import org.springframework.security.jackson.SecurityJacksonModules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -166,13 +167,24 @@ public class SecurityConfig {
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return context -> {
-            if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
-                Authentication principal = context.getPrincipal();
-                if (!(principal.getPrincipal() instanceof CustomUserDetails user)) {
-                    return;
-                }
-                List<String> authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toCollection(ArrayList::new));
-                context.getClaims().subject(user.getId().toString()).claim("authorities", authorities).claim("username", user.getUsername());
+            OAuth2TokenType tokenType = context.getTokenType();
+            boolean isAccessToken = tokenType.equals(OAuth2TokenType.ACCESS_TOKEN);
+            boolean isIdToken = tokenType.getValue().endsWith(OidcParameterNames.ID_TOKEN);
+            if(!isAccessToken && !isIdToken){
+                return;
+            }
+            Authentication principal = context.getPrincipal();
+            if (!(principal.getPrincipal() instanceof CustomUserDetails user)) {
+                return;
+            }
+            List<String> authorities = user.getAuthorities()
+                    .stream().map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+            context.getClaims().claim("authorities", authorities);
+
+            if (isAccessToken) {
+                context.getClaims().subject(user.getId().toString()).claim("username", user.getUsername());
             }
         };
     }
