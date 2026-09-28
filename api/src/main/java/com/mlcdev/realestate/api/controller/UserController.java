@@ -73,7 +73,7 @@ public class UserController {
         return ResponseEntity.ok(dto);
     }
 
-    @Operation(summary = "Toggle property active status", description = "Requires ADMIN role")
+    @Operation(summary = "Toggle User active status", description = "Requires ADMIN role")
     @SecurityRequirement(name = "oauth2")
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{userId}/toggle-active")
