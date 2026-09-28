@@ -69,6 +69,8 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+      auth-server:
+        condition: service_started
     restart: always
 
   auth-server:
@@ -101,6 +103,36 @@ services:
         condition: service_completed_successfully
     volumes:
       - ./auth-server/secrets:/app/secrets:ro
+    restart: always
+
+
+  bff:
+    build:
+      context: .
+      dockerfile: bff/Dockerfile
+    image: realestate-bff:latest
+    container_name: realestate_bff_container
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+      - bff/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+
+      REDIS_HOST: redis
+
+      TOKEN_URI: http://auth-server:9000/oauth2/token
+      JWK_SET_URI: http://auth-server:9000/oauth2/jwks
+      API_URL: http://api:8080
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      auth-server:
+        condition: service_started
+      api:
+        condition: service_started
     restart: always
 
 volumes:
