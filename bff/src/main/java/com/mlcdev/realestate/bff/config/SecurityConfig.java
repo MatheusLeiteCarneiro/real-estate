@@ -31,6 +31,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/properties/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/bff/session").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
         );
         http.exceptionHandling(handler -> handler

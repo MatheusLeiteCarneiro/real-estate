@@ -35,13 +35,18 @@ public class ApiClientConfig {
         return manager;
     }
 
-    @Bean
-    public RestClient apiRestClient(OAuth2AuthorizedClientManager authorizedClientManager,
+    @Bean("authRestClient")
+    public RestClient authRestClient(OAuth2AuthorizedClientManager authorizedClientManager,
                                     @Value("${real-estate.bff.api-url}") String apiUrl){
         OAuth2ClientHttpRequestInterceptor interceptor =
                 new OAuth2ClientHttpRequestInterceptor(authorizedClientManager);
         interceptor.setClientRegistrationIdResolver(_ -> REGISTRATION_ID);
         return RestClient.builder().baseUrl(apiUrl).requestInterceptor(interceptor).build();
+    }
+
+    @Bean("publicRestClient")
+    public RestClient publicRestClient(@Value("${real-estate.bff.api-url}") String apiUrl){
+        return RestClient.builder().baseUrl(apiUrl).build();
     }
 
     @Bean
