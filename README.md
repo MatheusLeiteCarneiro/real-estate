@@ -371,11 +371,11 @@ Scopes: openid
 
 ## Postman
 
-This repository includes:
+The `api` module includes its own Postman files, since Postman exercises the API directly:
 
 ```text
-real-estate.postman_collection.json
-real-estate.api.postman_environment.json
+api/docs/postman/real-estate.postman_collection.json
+api/docs/postman/real-estate.api.postman_environment.json
 ```
 
 Recommended flow:
