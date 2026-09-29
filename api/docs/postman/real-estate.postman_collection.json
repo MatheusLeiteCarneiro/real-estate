@@ -150,24 +150,6 @@
             "description": "Public JSON Web Key Set used to validate JWT access tokens."
           },
           "response": []
-        },
-        {
-          "name": "Logout",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{authorizationServerUrl}}/logout",
-              "host": [
-                "{{authorizationServerUrl}}"
-              ],
-              "path": [
-                "logout"
-              ]
-            },
-            "description": "Clears the authenticated server session used by the Authorization Code login."
-          },
-          "response": []
         }
       ]
     },
