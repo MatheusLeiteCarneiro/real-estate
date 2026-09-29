@@ -465,6 +465,12 @@ migrations/src/main/resources/db/migration
 
 The migrations cover the property/address schema, image metadata and primary image support, the user and role tables, broker-property ownership, property enum/status refactors, and the OAuth2 authorization persistence schema used by the Authorization Server.
 
+`migrations/seed/seed.sql` seeds a broker user and 6 sample properties (5 available, 1 not) with 1 image each, for local manual testing. Run it by hand, only when you want it:
+
+```bash
+psql "$DATABASE_URL" -f migrations/seed/seed.sql
+```
+
 ## Testing
 
 Run the complete verification lifecycle for every module with:
@@ -491,6 +497,7 @@ Test coverage includes:
 
 **BFF**
 - Unit tests for the upstream-response forwarding logic (status, content-type and body preserved byte-for-byte; transport headers dropped; `Location` rewritten to the BFF's own URL) and for the API error handler (4xx/5xx mirrored with the same status and body; missing token mapped to a bare 401)
+- Integration test using Redis via Testcontainers and a plain JDK `HttpServer` standing in for the API: confirms `authRestClient` attaches a real bearer token when logged in and `publicRestClient` doesn't, upstream transport headers never reach the client, and `authenticated()` routes reject anonymous requests before they ever touch the API
 
 ## Example Request
 
