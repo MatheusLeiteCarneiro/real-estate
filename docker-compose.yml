@@ -17,14 +17,42 @@ services:
       retries: 5
     restart: always
 
+  redis:
+    image: redis:7-alpine
+    container_name: realestate_redis_container
+    command: redis-server --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required} --appendonly yes
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli --no-auth-warning -a \"${REDIS_PASSWORD}\" ping | grep PONG" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  migrations:
+    image: flyway/flyway:11.14.1
+    container_name: realestate_migrations_container
+    command: -url=jdbc:postgresql://database:5432/${POSTGRES_DB} -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} migrate
+    volumes:
+      - ./migrations/src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      database:
+        condition: service_healthy
+
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     image: realestate-api:latest
     container_name: realestate_api_container
     ports:
       - "8080:8080"
     env_file:
       - .env
+      - api/.env
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
 
@@ -34,16 +62,79 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
-      JWT_PUBLIC_KEY: file:/app/secrets/app.pub
-      JWT_PRIVATE_KEY: file:/app/secrets/app.key
+      JWK_SET_URI: http://auth-server:9000/oauth2/jwks
 
-      AUTHORIZATION_SERVER_URL: ${AUTHORIZATION_SERVER_URL:-http://localhost:8080}
-    volumes:
-      - ./secrets:/app/secrets:ro
     depends_on:
       database:
         condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+      auth-server:
+        condition: service_started
+    restart: always
+
+  auth-server:
+    build:
+      context: .
+      dockerfile: auth-server/Dockerfile
+    image: realestate-auth-server:latest
+    container_name: realestate_auth_server_container
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+      - auth-server/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+
+      DB_HOST: database
+      REDIS_HOST: redis
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./auth-server/secrets:/app/secrets:ro
+    restart: always
+
+
+  bff:
+    build:
+      context: .
+      dockerfile: bff/Dockerfile
+    image: realestate-bff:latest
+    container_name: realestate_bff_container
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+      - bff/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+
+      REDIS_HOST: redis
+
+      TOKEN_URI: http://auth-server:9000/oauth2/token
+      JWK_SET_URI: http://auth-server:9000/oauth2/jwks
+      API_URL: http://api:8080
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      auth-server:
+        condition: service_started
+      api:
+        condition: service_started
     restart: always
 
 volumes:
   postgres_data:
+  redis_data:
