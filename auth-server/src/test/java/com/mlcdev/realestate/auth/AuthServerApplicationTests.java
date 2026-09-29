@@ -1,9 +1,9 @@
 package com.mlcdev.realestate.auth;
 
+import com.mlcdev.realestate.auth.util.PostgresIntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@PostgresIntegrationTest
 class AuthServerApplicationTests {
 
     @Test
