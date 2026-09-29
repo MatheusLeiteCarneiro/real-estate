@@ -13,10 +13,13 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -59,6 +62,10 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import tools.jackson.databind.JacksonModule;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -92,7 +99,11 @@ public class SecurityConfig {
 
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()).with(authorizationServerConfigurer, as -> as.oidc(Customizer.withDefaults())).authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated()).exceptionHandling(ex -> ex.defaultAuthenticationEntryPointFor(new LoginUrlAuthenticationEntryPoint("/login"), new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
+        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()).with(authorizationServerConfigurer, as -> as.oidc(Customizer.withDefaults()))
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .exceptionHandling(ex ->
+                        ex.defaultAuthenticationEntryPointFor(new LoginUrlAuthenticationEntryPoint("/login"),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
 
         return http.build();
     }
@@ -224,5 +235,32 @@ public class SecurityConfig {
     @Bean
     public SessionRegistry sessionRegistry(FindByIndexNameSessionRepository<? extends Session> sessionRepository){
         return new SpringSessionBackedSessionRegistry<>(sessionRepository);
+    }
+
+    @Bean("authorizationServerCorsConfigurationSource")
+    @Profile("dev")
+    public CorsConfigurationSource devCorsConfigurationSource(@Value("${real-estate.oauth2.swagger.ui-origin}") String swaggerOrigin) {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(swaggerOrigin));
+        configuration.setAllowedMethods(List.of("POST"));
+        configuration.setAllowedHeaders(List.of("Content-Type", "Accept", "X-Requested-With"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/oauth2/token", configuration);
+        return source;
+    }
+
+    @Bean("authorizationServerCorsConfigurationSource")
+    @Profile("prod")
+    public CorsConfigurationSource prodCorsConfigurationSource() {
+        return new UrlBasedCorsConfigurationSource();
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilterRegistration(
+            @Qualifier("authorizationServerCorsConfigurationSource") CorsConfigurationSource corsConfigurationSource) {
+        FilterRegistrationBean<CorsFilter> registration = new FilterRegistrationBean<>(new CorsFilter(corsConfigurationSource));
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
     }
 }
