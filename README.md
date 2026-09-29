@@ -475,16 +475,22 @@ Run the complete verification lifecycle for every module with:
 
 Test coverage includes:
 
-- Application context loading for each module
-- Property mapping and service behavior
+**API**
+- Application context loading, property mapping and service behavior
 - Broker ownership validation
 - Strong password validation
-- PostgreSQL integration tests using Testcontainers
-- Flyway migration validation against a real PostgreSQL 15 container
+- PostgreSQL integration tests using Testcontainers, with Flyway applying the real migrations from the `migrations` module (not a Hibernate-generated schema)
 - Property visibility and authorization integration tests
 - Image upload rollback behavior
 
-The BFF's OAuth2/session/CSRF/CORS behavior has been validated through manual end-to-end testing (real browser login, multi-instance load-balanced deployments, and full proxy coverage for every write endpoint) rather than automated integration tests so far.
+**Authorization Server**
+- PostgreSQL and Redis integration tests using Testcontainers, same real-migrations setup as the API
+- Full OAuth2 authorization code + PKCE flow: login, `/oauth2/authorize`, token exchange, and the custom claims added to the issued JWT (subject, username, authorities)
+- Anonymous access rejected, invalid client credentials rejected, OIDC discovery metadata
+- Test RSA key pair generated in memory per run — no key material committed to the repository
+
+**BFF**
+- Unit tests for the upstream-response forwarding logic (status, content-type and body preserved byte-for-byte; transport headers dropped; `Location` rewritten to the BFF's own URL) and for the API error handler (4xx/5xx mirrored with the same status and body; missing token mapped to a bare 401)
 
 ## Example Request
 
