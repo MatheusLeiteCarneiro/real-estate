@@ -5,9 +5,15 @@ WORKDIR /app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
+COPY migrations/pom.xml migrations/pom.xml
 COPY api/pom.xml api/pom.xml
 
 RUN chmod +x mvnw
+RUN ./mvnw install -N
+
+COPY migrations/src migrations/src
+RUN ./mvnw -f migrations/pom.xml install -DskipTests
+
 RUN ./mvnw -f api/pom.xml dependency:go-offline
 
 COPY api/src api/src

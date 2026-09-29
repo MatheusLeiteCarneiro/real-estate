@@ -5,9 +5,15 @@ WORKDIR /app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
+COPY migrations/pom.xml migrations/pom.xml
 COPY auth-server/pom.xml auth-server/pom.xml
 
 RUN chmod +x mvnw
+RUN ./mvnw install -N
+
+COPY migrations/src migrations/src
+RUN ./mvnw -f migrations/pom.xml install -DskipTests
+
 RUN ./mvnw -f auth-server/pom.xml dependency:go-offline
 
 COPY auth-server/src auth-server/src
