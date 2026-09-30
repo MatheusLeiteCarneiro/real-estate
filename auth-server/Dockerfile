@@ -32,6 +32,6 @@ COPY --from=build --chown=appuser:appgroup \
 
 USER appuser
 
-EXPOSE 8080
+EXPOSE 9000
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
