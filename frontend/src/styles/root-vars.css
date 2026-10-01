@@ -1,0 +1,54 @@
+:root{
+
+  /* Color variables */
+  --surface-100: #FAF6F0;
+  --surface-200: #F1EADF;
+  --surface-raised: #FFFFFF;
+  --border: #E4DACB;
+  --border-strong: #8C7E6B;
+  --ink: #2A2622;
+  --ink-muted: #655C52;
+  --accent: #A4452A;
+  --accent-hover: #8C3A22;
+  --accent-soft: #F5E3D8;
+  --on-accent: #FFFFFF;
+  --gold: #B08A3E;
+  --success: #25654A;
+  --success-soft: #E3F0E8;
+  --danger: #9E2B25;
+  --danger-soft: #F8E4E0;
+  --warning: #7A5200;
+  --warning-soft: #F7EBCF;
+  --focus: #1F4E79;
+  --scrim: rgba(42, 38, 34, 0.5);
+
+
+  /* Spacing variables */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+
+  /* Border Radius variables */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+
+  /* Shadow variables */
+  --shadow-sm: 0 1px 2px rgba(42, 38, 34, 0.06), 0 1px 3px rgba(42, 38, 34, 0.05);
+  --shadow-md: 0 6px 16px rgba(42, 38, 34, 0.08), 0 2px 4px rgba(42, 38, 34, 0.05);
+  --shadow-lg: 0 20px 40px rgba(42, 38, 34, 0.14), 0 4px 10px rgba(42, 38, 34, 0.06);
+
+
+  /* Font Family variables */
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
