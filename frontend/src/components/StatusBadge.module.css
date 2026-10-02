@@ -1,0 +1,60 @@
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusBadge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.statusBadge-sale {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.statusBadge-rent {
+  background: var(--surface-200);
+  color: var(--ink);
+}
+
+.statusBadge-active {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.statusBadge-inactive {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.statusBadge-unavailable {
+  background: var(--surface-100);
+  border: 1px solid var(--border-strong);
+  color: var(--ink-muted);
+}
+
+.statusBadge-admin {
+  background: var(--surface-200);
+  color: var(--ink);
+}
+
+.statusBadge-broker {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.statusBadge-cover {
+  background: var(--ink);
+  color: var(--surface-100);
+}
