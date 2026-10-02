@@ -1,0 +1,34 @@
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.iconBtn:hover {
+  background: var(--surface-200);
+}
+
+.iconBtn-danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.iconBtn-danger:hover {
+  background: var(--danger-soft);
+}
+
+.iconBtn-confirm {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.iconBtn-confirm:hover {
+  background: var(--success-soft);
+}
