@@ -1,6 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+import '@fontsource-variable/hanken-grotesk'
+import '@fontsource-variable/newsreader/opsz.css'
 import './styles/root-vars.css'
 import './styles/base.css'
 
