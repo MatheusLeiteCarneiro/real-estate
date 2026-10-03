@@ -40,7 +40,7 @@ const ICONS = {
 
 export default function Icon({
   name,
-  size = 24,
+  size = "1.5rem",
   strokeWidth = 1.6,
   label,
   ...props
