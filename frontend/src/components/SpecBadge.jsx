@@ -15,7 +15,7 @@ export default function SpecBadge({icon, value, label, variant = 'inline'}){
 
   return(
     <span className={className}>
-      <Icon name={icon}/>
+      <Icon name={icon} size={variant === 'tile' ? '1.5rem' : '1.125rem'} />
       <span className={valueClassName}>{value}</span>
       {label && <span className={styles.label}>{label}</span>}
     </span>
