@@ -30,7 +30,7 @@
   display: none;
 }
 
-.transaction {
+.wide {
   grid-column: 1 / -1;
 }
 
@@ -40,15 +40,16 @@
   }
 
   .panel {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .transaction,
-  .short {
-    grid-column: span 2;
+  .wide {
+    grid-column: auto;
   }
+}
 
-  .price {
-    grid-column: span 3;
+@media (min-width: 1024px) {
+  .panel {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
