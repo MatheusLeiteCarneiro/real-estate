@@ -14,6 +14,7 @@ import {
   UserRound,
   SlidersHorizontal,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck,
   CircleHelp,
   TriangleAlert,
@@ -35,6 +36,7 @@ const ICONS = {
   user: UserRound,
   filter: SlidersHorizontal,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   shield: ShieldCheck,
   question: CircleHelp,
   alert: TriangleAlert
