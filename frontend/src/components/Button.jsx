@@ -1,7 +1,7 @@
 import Icon from "./Icon";
 import styles from "./Button.module.css"
 
-export default function Button({children, variant = 'primary', href, disabled, iconBefore, iconAfter, size, block, onClick}){
+export default function Button({children, variant = 'primary', href, disabled, iconBefore, iconAfter, size, block, onClick, type = 'button'}){
 const className = [
   styles.btn,
   styles[`btn-${variant}`],
@@ -17,7 +17,7 @@ const className = [
       {iconAfter && <Icon name={iconAfter} />}</a>
   }
   else{
-    return <button type="button" className={className} disabled={disabled} onClick={onClick}>
+    return <button type={type} className={className} disabled={disabled} onClick={onClick}>
       {iconBefore && <Icon name={iconBefore} />}
       {children}
       {iconAfter && <Icon name={iconAfter} />}

@@ -15,6 +15,12 @@
   background: var(--surface-200);
 }
 
+.iconBtn[aria-expanded="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface-100);
+}
+
 .iconBtn-danger {
   color: var(--danger);
   border-color: var(--danger);

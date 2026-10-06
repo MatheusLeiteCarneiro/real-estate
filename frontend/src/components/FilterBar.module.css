@@ -1,0 +1,54 @@
+.filterBar {
+  padding: var(--space-4);
+  background: var(--surface-raised);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.searchRow {
+  display: flex;
+  align-items: end;
+  gap: var(--space-3);
+}
+
+.searchField {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: end;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.transaction {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .filterBar {
+    padding: var(--space-5);
+  }
+
+  .panel {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .transaction,
+  .short {
+    grid-column: span 2;
+  }
+
+  .price {
+    grid-column: span 3;
+  }
+}
