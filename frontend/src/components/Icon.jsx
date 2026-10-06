@@ -16,6 +16,7 @@ import {
   ArrowRight,
   ShieldCheck,
   CircleHelp,
+  TriangleAlert,
 } from "lucide-react";
 
 const ICONS = {
@@ -36,6 +37,7 @@ const ICONS = {
   arrowRight: ArrowRight,
   shield: ShieldCheck,
   question: CircleHelp,
+  alert: TriangleAlert
 };
 
 export default function Icon({
