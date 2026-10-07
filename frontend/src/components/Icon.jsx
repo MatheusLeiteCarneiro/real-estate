@@ -18,6 +18,8 @@ import {
   ShieldCheck,
   CircleHelp,
   TriangleAlert,
+  LoaderCircle,
+  SearchX,
 } from "lucide-react";
 
 const ICONS = {
@@ -39,7 +41,9 @@ const ICONS = {
   arrowLeft: ArrowLeft,
   shield: ShieldCheck,
   question: CircleHelp,
-  alert: TriangleAlert
+  alert: TriangleAlert,
+  loader: LoaderCircle,
+  searchOff: SearchX,
 };
 
 export default function Icon({
