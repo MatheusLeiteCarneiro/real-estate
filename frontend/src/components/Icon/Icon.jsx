@@ -20,6 +20,7 @@ import {
   TriangleAlert,
   LoaderCircle,
   SearchX,
+  ImageOff,
 } from "lucide-react";
 
 const ICONS = {
@@ -44,6 +45,7 @@ const ICONS = {
   alert: TriangleAlert,
   loader: LoaderCircle,
   searchOff: SearchX,
+  imageOff: ImageOff,
 };
 
 export default function Icon({

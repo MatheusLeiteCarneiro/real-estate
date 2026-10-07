@@ -1,3 +1,5 @@
+import { useState } from "react"
+import Icon from "../Icon/Icon"
 import StatusBadge from "../StatusBadge/StatusBadge"
 import SpecBadge from "../SpecBadge/SpecBadge"
 import styles from "./PropertyCard.module.css"
@@ -11,6 +13,9 @@ const priceFormatter = new Intl.NumberFormat("en-US", {
 export default function PropertyCard({ property }) {
   const { id, title, city, price, tx: type, beds, baths, area, active = true, image } = property
 
+  const [imageFailed, setImageFailed] = useState(false)
+  const showImage = image && !imageFailed
+
   const mediaClassName = [
     styles.media,
     !active && styles.mediaInactive,
@@ -19,7 +24,20 @@ export default function PropertyCard({ property }) {
   return (
     <article className={styles.card}>
       <div className={mediaClassName}>
-        {image && <img className={styles.image} src={image} alt="" loading="lazy" />}
+        {showImage ? (
+          <img
+            className={styles.image}
+            src={image}
+            alt=""
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+          />
+        ) : (
+          <div className={styles.placeholder}>
+            <Icon name="imageOff" size="2.5rem" />
+            <span className={styles.placeholderText}>No photo available</span>
+          </div>
+        )}
         <div className={styles.tag}>
           <StatusBadge kind={active ? type : "unavailable"} />
         </div>
