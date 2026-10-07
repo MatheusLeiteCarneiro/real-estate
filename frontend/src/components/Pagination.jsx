@@ -35,8 +35,8 @@ export default function Pagination({
   onPageSizeChange,
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }) {
-  const showNavigation = pages > 1
-  const showPageSize = Boolean(onPageSizeChange) && (showNavigation || pageSize > Math.min(...pageSizeOptions))
+  const showNavigation = pages >= 1
+  const showPageSize = Boolean(onPageSizeChange)
 
   if (!showNavigation && !showPageSize) return null
 
@@ -50,9 +50,11 @@ export default function Pagination({
     <div className={styles.container}>
       {showNavigation && (
         <nav className={styles.pagination} aria-label="Pagination">
-          <Button variant="secondary" iconBefore="arrowLeft" disabled={page <= 1} onClick={() => goTo(page - 1)}>
-            Previous
-          </Button>
+          <div className={styles.navButton}>
+            <Button variant="secondary" iconBefore="arrowLeft" block disabled={page <= 1} onClick={() => goTo(page - 1)}>
+              Previous
+            </Button>
+          </div>
 
           <p className={styles.summary}>Page {page} of {pages}</p>
 
@@ -83,9 +85,11 @@ export default function Pagination({
             })}
           </ul>
 
-          <Button variant="secondary" iconAfter="arrowRight" disabled={page >= pages} onClick={() => goTo(page + 1)}>
-            Next
-          </Button>
+          <div className={styles.navButton}>
+            <Button variant="secondary" iconAfter="arrowRight" block disabled={page >= pages} onClick={() => goTo(page + 1)}>
+              Next
+            </Button>
+          </div>
         </nav>
       )}
       {showPageSize && (

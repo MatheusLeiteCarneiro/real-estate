@@ -110,6 +110,10 @@
     display: none;
   }
 
+  .navButton {
+    min-width: 9rem;
+  }
+
   .pages {
     display: flex;
     align-items: center;
