@@ -1,5 +1,5 @@
-import StatusBadge from "./StatusBadge"
-import SpecBadge from "./SpecBadge"
+import StatusBadge from "../StatusBadge/StatusBadge"
+import SpecBadge from "../SpecBadge/SpecBadge"
 import styles from "./PropertyCard.module.css"
 
 const priceFormatter = new Intl.NumberFormat("en-US", {

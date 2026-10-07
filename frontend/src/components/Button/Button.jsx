@@ -1,4 +1,4 @@
-import Icon from "./Icon";
+import Icon from "../Icon/Icon";
 import styles from "./Button.module.css"
 
 export default function Button({children, variant = 'primary', href, disabled, iconBefore, iconAfter, size, block, onClick, type = 'button'}){

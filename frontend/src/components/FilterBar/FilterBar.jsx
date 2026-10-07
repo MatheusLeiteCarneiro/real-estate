@@ -1,8 +1,8 @@
 import { useId, useState } from "react"
-import Button from "./Button"
-import FormField from "./FormField"
-import IconButton from "./IconButton"
-import Segmented from "./Segmented"
+import Button from "../Button/Button"
+import FormField from "../FormField/FormField"
+import IconButton from "../IconButton/IconButton"
+import Segmented from "../Segmented/Segmented"
 import styles from "./FilterBar.module.css"
 
 const transactionOptions = [

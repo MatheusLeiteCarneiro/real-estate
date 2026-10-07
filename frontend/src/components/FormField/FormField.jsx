@@ -1,5 +1,5 @@
 import { useId } from "react"
-import Icon from "./Icon"
+import Icon from "../Icon/Icon"
 import styles from "./FormField.module.css"
 
 export default function FormField({

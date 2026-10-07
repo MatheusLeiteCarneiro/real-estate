@@ -1,4 +1,4 @@
-import Icon from "./Icon"
+import Icon from "../Icon/Icon"
 import styles from "./SpecBadge.module.css"
 
 export default function SpecBadge({icon, value, label, variant = 'inline'}){

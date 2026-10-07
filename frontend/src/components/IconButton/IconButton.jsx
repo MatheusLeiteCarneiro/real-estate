@@ -1,4 +1,4 @@
-import Icon from "./Icon";
+import Icon from "../Icon/Icon";
 import styles from "./IconButton.module.css"
 export default function IconButton({icon, label, variant = 'default', onClick, ...props}){
   const className = [
