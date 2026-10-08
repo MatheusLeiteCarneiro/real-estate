@@ -21,6 +21,8 @@ import {
   LoaderCircle,
   SearchX,
   ImageOff,
+  ChevronDown,
+  LogOut,
 } from "lucide-react";
 
 const ICONS = {
@@ -46,6 +48,8 @@ const ICONS = {
   loader: LoaderCircle,
   searchOff: SearchX,
   imageOff: ImageOff,
+  chevronDown: ChevronDown,
+  logOut: LogOut,
 };
 
 export default function Icon({

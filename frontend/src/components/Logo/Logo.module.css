@@ -8,6 +8,7 @@
 
 .logoText {
   font-family: var(--font-serif);
+  white-space: nowrap;
   font-size: 1.25rem;
 }
 
