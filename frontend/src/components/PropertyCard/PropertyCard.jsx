@@ -2,13 +2,8 @@ import { useState } from "react"
 import Icon from "../Icon/Icon"
 import StatusBadge from "../StatusBadge/StatusBadge"
 import SpecBadge from "../SpecBadge/SpecBadge"
+import { formatPrice } from "../../lib/format"
 import styles from "./PropertyCard.module.css"
-
-const priceFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-})
 
 export default function PropertyCard({ property }) {
   const { id, title, city, price, tx: type, beds, baths, area, active = true, image } = property
@@ -45,7 +40,7 @@ export default function PropertyCard({ property }) {
 
       <div className={styles.body}>
         <p className={styles.price}>
-          {priceFormatter.format(price)}
+          {formatPrice(price)}
           {active && type === "rent" && <span className={styles.period}>/mo</span>}
         </p>
         <h3 className={styles.title}>

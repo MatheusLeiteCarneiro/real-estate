@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import FilterBar from '../components/FilterBar/FilterBar'
 import Hero from '../components/Hero/Hero'
-import Icon from '../components/Icon/Icon'
 import PropertyCard from '../components/PropertyCard/PropertyCard'
 import Pagination from '../components/Pagination/Pagination'
+import StatusMessage from '../components/StatusMessage/StatusMessage'
 import { toPropertyCardProps } from '../lib/propertyMapper'
 import { useProperties } from '../hooks/useProperties'
 import styles from './HomePage.module.css'
@@ -42,22 +42,13 @@ export default function HomePage() {
           </div>
 
           {error && (
-            <p className={styles.status} role="alert">
-              <Icon name="alert" size="2rem" className={styles.statusIconError} />
+            <StatusMessage variant="error">
               Something went wrong while loading the properties.
-            </p>
+            </StatusMessage>
           )}
-          {loading && !error && (
-            <p className={styles.status} role="status">
-              <Icon name="loader" size="2rem" className={styles.spinner} />
-              Loading…
-            </p>
-          )}
+          {loading && !error && <StatusMessage variant="loading">Loading…</StatusMessage>}
           {!loading && !error && data?.content.length === 0 && (
-            <p className={styles.status}>
-              <Icon name="searchOff" size="2rem" className={styles.statusIcon} />
-              No properties found.
-            </p>
+            <StatusMessage variant="empty">No properties found.</StatusMessage>
           )}
 
           {!loading && !error && data?.content.length > 0 && (

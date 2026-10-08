@@ -37,39 +37,6 @@
 }
 
 
-.status {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  margin: 0;
-  padding: var(--space-7) var(--space-4);
-  color: var(--ink-muted);
-  text-align: center;
-  background: var(--surface-raised);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-}
-
-.statusIcon {
-  color: var(--ink-muted);
-}
-
-.statusIconError {
-  color: var(--danger);
-}
-
-.spinner {
-  color: var(--accent);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
