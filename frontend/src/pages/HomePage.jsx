@@ -26,7 +26,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className={styles.page}>
+    <main className={styles.page}>
       <Hero eyebrow="Homes, land and commercial" title="Find a place that feels like yours">
         Search homes, apartments and land for sale or rent, and find the one that fits your life.
       </Hero>
@@ -81,6 +81,6 @@ export default function HomePage() {
           )}
         </div>
       </section>
-    </div>
+    </main>
   )
 }
