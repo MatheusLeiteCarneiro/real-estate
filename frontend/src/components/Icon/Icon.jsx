@@ -23,6 +23,7 @@ import {
   ImageOff,
   ChevronDown,
   LogOut,
+  BedSingle,
 } from "lucide-react";
 
 const ICONS = {
@@ -50,6 +51,7 @@ const ICONS = {
   imageOff: ImageOff,
   chevronDown: ChevronDown,
   logOut: LogOut,
+  suite: BedSingle,
 };
 
 export default function Icon({
