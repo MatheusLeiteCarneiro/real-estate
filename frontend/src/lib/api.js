@@ -10,6 +10,20 @@ export async function fetchProperties({filters = {}, page = 1, size = 20}){
 
 }
 
+export async function fetchProperty(id) {
+  const response = await fetch(`/api/properties/${id}`)
+  
+ if (!response.ok) {
+  const error = new Error(`Request failed with status ${response.status}`)
+  error.status = response.status
+  throw error
+}
+
+  return response.json()
+
+
+}
+
 export async function fetchSession() {
   const response = await fetch('/api/bff/session')
 
