@@ -74,6 +74,14 @@ public class UserController {
                 .retrieve().toEntity(byte[].class));
     }
 
+    @GetMapping("/me/properties")
+    public ResponseEntity<byte[]> findMyProperties(@RequestParam Map<String, String> params) {
+        return ApiResponses.forward(authRestClient.get().uri(uriBuilder -> {
+            params.forEach(uriBuilder::queryParam);
+            return uriBuilder.path(USER_BASE_URL + "/me/properties").build();
+        }).retrieve().toEntity(byte[].class));
+    }
+
     @GetMapping("/{brokerId}/properties")
     public ResponseEntity<byte[]> findBrokerProperties(@PathVariable UUID brokerId, @RequestParam Map<String, String> params) {
         return ApiResponses.forward(authRestClient.get().uri(uriBuilder -> {

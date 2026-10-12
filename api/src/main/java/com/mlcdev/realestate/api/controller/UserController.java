@@ -81,7 +81,6 @@ public class UserController {
         return ResponseEntity.ok(userService.toggleActive(userId));
     }
 
-
     @Operation(summary = "Find all properties by broker", description = "Requires ADMIN role")
     @SecurityRequirement(name = "oauth2")
     @PreAuthorize("hasRole('ADMIN')")
@@ -101,5 +100,17 @@ public class UserController {
     public ResponseEntity<UserDTO> findMe(@AuthenticationPrincipal Jwt jwt) {
         UserDTO dto = userService.findById(JwtUtils.getUserId(jwt));
         return ResponseEntity.ok(dto);
+    }
+
+    @Operation(summary = "Find all properties for the logged broker", description = "Requires BROKER role")
+    @SecurityRequirement(name = "oauth2")
+    @PreAuthorize("hasRole('BROKER')")
+    @GetMapping(value = "/me/properties")
+    public ResponseEntity<Page<PropertySummaryDTO>> findMyProperties(
+            @ParameterObject @ModelAttribute PropertyFilter filter,
+            @ParameterObject @PageableDefault(sort = {"available", "createdAt"}, direction = Sort.Direction.DESC, size = 20) Pageable pageable,
+            @AuthenticationPrincipal Jwt jwt) {
+        Page<PropertySummaryDTO> propertyPage = propertyService.findBrokerProperties(pageable, filter, JwtUtils.getUserId(jwt));
+        return ResponseEntity.ok(propertyPage);
     }
 }
