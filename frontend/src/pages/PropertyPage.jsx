@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router"
 import Icon from "../components/Icon/Icon"
 import SpecBadge from "../components/SpecBadge/SpecBadge"
 import StatusBadge from "../components/StatusBadge/StatusBadge"
+import Gallery from "../components/Gallery/Gallery"
 import { formatCategory, formatPrice, formatZipCode } from "../lib/format"
 import { useProperty } from "../hooks/useProperty"
 import StatusMessage from "../components/StatusMessage/StatusMessage"
@@ -54,7 +55,6 @@ export default function PropertyPage() {
     images,
   } = data
 
-  const mainImage = images.find((image) => image.isPrimary) ?? images[0]
   const streetLine = [`${address.street}, ${address.number}`, address.complement].filter(Boolean).join(" · ")
   const cityLine = `${address.neighborhood}, ${address.city} - ${address.state}`
 
@@ -66,16 +66,7 @@ export default function PropertyPage() {
           Back to listings
         </Link>
 
-        <div className={styles.photo}>
-          {mainImage ? (
-            <img className={styles.photoImage} src={mainImage.url} alt={title} />
-          ) : (
-            <div className={styles.photoPlaceholder}>
-              <Icon name="imageOff" size="3rem" />
-              <span>No photo available</span>
-            </div>
-          )}
-        </div>
+        <Gallery images={images} title={title} key={id} />
 
         <div className={styles.head}>
           <div>
