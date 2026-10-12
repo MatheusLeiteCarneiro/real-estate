@@ -3,6 +3,7 @@ import Icon from "../Icon/Icon"
 import StatusBadge from "../StatusBadge/StatusBadge"
 import SpecBadge from "../SpecBadge/SpecBadge"
 import { formatPrice } from "../../lib/format"
+import { IMAGE_WIDTH, resizeImage } from "../../lib/image"
 import styles from "./PropertyCard.module.css"
 
 export default function PropertyCard({ property }) {
@@ -22,7 +23,7 @@ export default function PropertyCard({ property }) {
         {showImage ? (
           <img
             className={styles.image}
-            src={image}
+            src={resizeImage(image, IMAGE_WIDTH.card)}
             alt=""
             loading="lazy"
             onError={() => setImageFailed(true)}
