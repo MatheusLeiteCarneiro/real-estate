@@ -43,6 +43,11 @@
   }
 }
 
+.unavailable > .photo img,
+.unavailable > ul img {
+  filter: grayscale(1);
+}
+
 .placeholder {
   position: absolute;
   inset: 0;

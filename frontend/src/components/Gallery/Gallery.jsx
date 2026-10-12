@@ -5,7 +5,7 @@ import Thumbnails from "../Thumbnails/Thumbnails"
 import { IMAGE_WIDTH, resizeImage } from "../../lib/image"
 import styles from "./Gallery.module.css"
 
-export default function Gallery({ images = [], title }) {
+export default function Gallery({ images = [], title, unavailable = false }) {
   const primary = images.find((image) => image.isPrimary)
   const ordered = primary
     ? [primary, ...images.filter((image) => image !== primary)]
@@ -37,8 +37,10 @@ export default function Gallery({ images = [], title }) {
     )
   }
 
+  const galleryClassName = [styles.gallery, unavailable && styles.unavailable].filter(Boolean).join(" ")
+
   return (
-    <div className={styles.gallery}>
+    <div className={galleryClassName}>
       <button
         type="button"
         className={`${styles.photo} ${styles.photoButton}`}

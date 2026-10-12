@@ -66,7 +66,17 @@ export default function PropertyPage() {
           Back to listings
         </Link>
 
-        <Gallery images={images} title={title} key={id} />
+        {!available && (
+          <div className={styles.notice} role="status">
+            <Icon name="alert" size="1.75rem" className={styles.noticeIcon} />
+            <div>
+              <p className={styles.noticeTitle}>This property is unavailable</p>
+              <p className={styles.noticeText}>It is hidden from the public listings. Only staff can see this page.</p>
+            </div>
+          </div>
+        )}
+
+        <Gallery images={images} title={title} unavailable={!available} key={id} />
 
         <div className={styles.head}>
           <div>
