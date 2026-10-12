@@ -1,3 +1,4 @@
+import {Link} from "react-router"
 import { useEffect, useId, useRef, useState } from "react"
 import Icon from "../Icon/Icon"
 import Logo from "../Logo/Logo"
@@ -53,15 +54,15 @@ export default function Header({ user }) {
                 {user.role && <StatusBadge kind={user.role} />}
               </div>
 
-              <a href="/profile" className={styles.menuItem}>
+              <Link to="/profile" className={styles.menuItem} onClick={() => setMenuOpen(false)}>
                 <Icon name="user" size="1.125rem" />
                 My profile
-              </a>
+              </Link>
               {user.role === "admin" && (
-                <a href="/admin" className={styles.menuItem}>
+                <Link to="/admin" className={styles.menuItem} onClick={() => setMenuOpen(false)}>
                   <Icon name="shield" size="1.125rem" />
                   Admin panel
-                </a>
+                </Link>
               )}
 
               <form method="post" action="/logout" className={styles.logoutForm}>

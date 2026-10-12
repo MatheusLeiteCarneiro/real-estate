@@ -1,3 +1,4 @@
+import {Link} from "react-router"
 import { useState } from "react"
 import Icon from "../Icon/Icon"
 import StatusBadge from "../StatusBadge/StatusBadge"
@@ -45,7 +46,7 @@ export default function PropertyCard({ property }) {
           {active && type === "rent" && <span className={styles.period}>/mo</span>}
         </p>
         <h3 className={styles.title}>
-          <a href={`/properties/${id}`} className={styles.link}>{title}</a>
+          <Link to={`/properties/${id}`} className={styles.link}>{title}</Link>
         </h3>
         <p className={styles.city}>{city}</p>
 

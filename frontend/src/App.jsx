@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router"
 import Footer from './components/Footer/Footer'
 import Header from './components/Header/Header'
+import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import { useSession } from './hooks/useSession'
 import HomePage from './pages/HomePage'
 import PropertyPage from "./pages/PropertyPage"
@@ -11,12 +12,13 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Header user={user} />
-        <Routes>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/properties/:id" element={<PropertyPage/>}/>
-          <Route path="*" element={<NotFoundPage/>}/>
-        </Routes>
+      <Routes>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/properties/:id" element={<PropertyPage/>}/>
+        <Route path="*" element={<NotFoundPage/>}/>
+      </Routes>
       <Footer />
     </Router>
   )
